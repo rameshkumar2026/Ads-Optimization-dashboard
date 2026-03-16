@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ads Optimization Dashboard (Static)</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="title">
+        <div class="pill">Google Ads Optimization Agent (Static)</div>
+        <h1>Performance & Optimization Dashboard</h1>
+        <p>
+          Upload your keyword performance CSV. Everything runs in your browser (no backend).
+        </p>
+      </div>
+
+      <div class="upload">
+        <label class="file">
+          <input id="fileInput" type="file" accept=".csv" />
+          <span>Choose CSV</span>
+        </label>
+        <button id="loadSample" class="btn secondary" type="button">Load sample</button>
+        <button id="clear" class="btn tertiary" type="button">Clear</button>
+      </div>
+    </header>
+
+    <section id="banner" class="banner hidden"></section>
+
+    <main class="grid">
+      <section class="card">
+        <div class="cardHead">
+          <div>
+            <h2>Campaign Summary</h2>
+            <div class="sub">High-level performance across uploaded keywords</div>
+          </div>
+          <div class="sub" id="sourceLabel">No file loaded</div>
+        </div>
+
+        <div class="metrics" id="metrics">
+          <div class="metric">
+            <div class="label">Total Impressions</div>
+            <div class="value" id="mImpr">—</div>
+          </div>
+          <div class="metric">
+            <div class="label">Total Clicks</div>
+            <div class="value" id="mClicks">—</div>
+            <div class="hint" id="mCtr">CTR —</div>
+          </div>
+          <div class="metric">
+            <div class="label">Total Conversions</div>
+            <div class="value" id="mConv">—</div>
+            <div class="hint" id="mCvr">CVR —</div>
+          </div>
+          <div class="metric">
+            <div class="label">Total Spend</div>
+            <div class="value" id="mCost">—</div>
+            <div class="hint" id="mCpa">CPA —</div>
+          </div>
+        </div>
+
+        <div class="charts">
+          <div class="chartCard">
+            <div class="sub">CTR & Conversion Rate (top 15 by impressions)</div>
+            <canvas id="ctrChart"></canvas>
+          </div>
+          <div class="chartCard">
+            <div class="sub">Cost (top 15 by impressions)</div>
+            <canvas id="costChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="cardHead">
+          <div>
+            <h2>AI Optimization Agent</h2>
+            <div class="sub">Natural-language summary & recommendations</div>
+          </div>
+        </div>
+        <div id="agent" class="agent">
+          Upload a CSV to generate an AI-style report.
+        </div>
+        <div class="chips">
+          <div class="chip good">Top keywords: <span id="cTop">0</span></div>
+          <div class="chip bad">Wasting budget: <span id="cWaste">0</span></div>
+          <div class="chip">Opportunities: <span id="cOpp">0</span></div>
+        </div>
+        <div class="sub small">
+          Rules engine (editable in code): low CTR, high CTR, high cost + zero conversions, high conversion rate, high impressions + low CTR.
+        </div>
+      </section>
+    </main>
+
+    <section class="row">
+      <section class="card">
+        <div class="cardHead">
+          <div>
+            <h2>Top Performing Keywords</h2>
+            <div class="sub">Sorted by conversions then CTR</div>
+          </div>
+        </div>
+        <div class="tableWrap">
+          <table id="topTable">
+            <thead>
+              <tr>
+                <th>Keyword</th>
+                <th>Impr.</th>
+                <th>Clicks</th>
+                <th>Conv.</th>
+                <th>CTR</th>
+                <th>CVR</th>
+                <th>Cost</th>
+                <th>CPA</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="cardHead">
+          <div>
+            <h2>Wasted Spend & Opportunities</h2>
+            <div class="sub">Keywords to pause, refine, or reinvest in</div>
+          </div>
+        </div>
+
+        <div class="sub">Wasting budget (high cost, zero conversions)</div>
+        <div class="tableWrap smallTable">
+          <table id="wasteTable">
+            <thead>
+              <tr>
+                <th>Keyword</th>
+                <th>Clicks</th>
+                <th>Cost</th>
+                <th>Signal</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="sub" style="margin-top: 10px;">Optimization opportunities</div>
+        <div class="tableWrap smallTable">
+          <table id="oppTable">
+            <thead>
+              <tr>
+                <th>Keyword</th>
+                <th>Impr.</th>
+                <th>CTR</th>
+                <th>CVR</th>
+                <th>Recommendation</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer">
+      <div>
+        Built as a static dashboard for Vercel hosting. Your data stays in your browser.
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
+
