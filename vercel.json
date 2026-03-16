@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/vercel_dashboard/index.html" },
+    { "source": "/(.*)", "destination": "/vercel_dashboard/$1" }
+  ]
+}
+
