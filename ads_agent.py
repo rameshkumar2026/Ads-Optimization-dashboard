@@ -44,12 +44,25 @@ def clean_and_compute_metrics(df: pd.DataFrame) -> pd.DataFrame:
         if col not in df.columns:
             df[col] = 0
 
+    # Helper to coerce currency / numeric-looking strings to numbers
+    def _to_number_series(values) -> pd.Series:
+        s = values
+        if not isinstance(s, pd.Series):
+            s = pd.Series(s)
+        s = s.astype(str).str.strip()
+        # Remove currency symbols and commas, e.g. "$231.88", "1,234.56"
+        s = s.str.replace(r"[\\$,]", "", regex=True)
+        s = s.replace({"": pd.NA, "nan": pd.NA, "None": pd.NA, "null": pd.NA})
+        return pd.to_numeric(s, errors="coerce").fillna(0)
+
     # Convert numeric safely (handles duplicate column names)
     for col in ["impressions", "clicks", "conversions", "cost"]:
         values = df[col]
         if isinstance(values, pd.DataFrame):
-            values = values.apply(pd.to_numeric, errors="coerce").sum(axis=1)
-        df[col] = pd.to_numeric(values, errors="coerce").fillna(0)
+            values = values.apply(_to_number_series).sum(axis=1)
+            df[col] = values
+        else:
+            df[col] = _to_number_series(values)
 
     # Metrics
     df["ctr"] = 0.0

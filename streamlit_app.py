@@ -6,6 +6,7 @@ import pandas as pd
 import streamlit as st
 
 from ads_agent import load_csv, build_from_df
+from typing import Optional
 
 
 BASE_DIR = Path(__file__).parent
@@ -23,7 +24,7 @@ def _format_pct(x: float) -> str:
     return f"{x * 100:.2f}%"
 
 
-def _load_default_if_exists() -> pd.DataFrame | None:
+def _load_default_if_exists() -> Optional[pd.DataFrame]:
     if DEFAULT_CSV.exists():
         return load_csv(DEFAULT_CSV)
     return None
