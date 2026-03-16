@@ -157,4 +157,3 @@ with c3:
     st.subheader("Optimization opportunities")
     st.dataframe(pd.DataFrame(insights.get("opportunities", [])), use_container_width=True, height=260)
 
-Fix streamlit Python compatibility 
